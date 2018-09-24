@@ -231,18 +231,21 @@ export default class App extends React.Component {
        <TextInput
        placeholder={"Food Name"}
        value={this.state.foodName}
+        style={styles.input}
        onChangeText={(text) =>this.setState({foodName:text})}
        underlineColorAndroid="#000000"
        />
        <TextInput
        placeholder={"Resturant Address"}
        value={this.state.resturantAddress}
+       style={styles.input}
        onChangeText={(text) =>this.setState({resturantAddress:text})}
        underlineColorAndroid="#000000"
        />
        <TextInput
        placeholder={"User Review"}
        value={this.state.userReview}
+       style={styles.input}
        onChangeText={(text) =>this.setState({userReview:text})}
        underlineColorAndroid="#000000"
        />
@@ -252,20 +255,23 @@ export default class App extends React.Component {
        fractions={0}
        startingValue={0}
        imageSize={30}
+       ratingTextColor="#00cdbe"
+       ratingBackgroundColor="#00cdbe"
        onFinishRating={this.ratingCompleted}
        showRating
-       style={{ paddingVertical: 20 }}
+       style={styles.starContainer}
        />
-       <TouchableOpacity onPress={()=>{
+       <TouchableOpacity
+        onPress={()=>{
          this._pickImage()
          this.setState({imageSelect:1})
        }}
-       style={styles.button}>
+       style={styles.buttonLink}>
          {
            this.state.bgImageSrc!=""?
            <Text> Image Uploaded </Text>
            :
-           <Text style={styles.buttonText}>Add background Img Source</Text>
+           <Text style={styles.link}>Meal Image</Text>
          }
        </TouchableOpacity>
 
@@ -273,18 +279,18 @@ export default class App extends React.Component {
          this._pickImage()
          this.setState({imageSelect:2})
        }}
-       style={styles.button}>
+       style={styles.buttonLink}>
            {
              this.state.profileImage!=""?
              <Text> Image Uploaded </Text>
              :
-           <Text style={styles.buttonText}>Add Profile Img Source</Text>
+           <Text style={styles.link}>Profile Image</Text>
            }
        </TouchableOpacity>
 
 
        <TouchableOpacity onPress={()=>this.setState({showImage:true})} style={styles.button}>
-           <Text style={styles.buttonText}>Submit</Text>
+           <Text style={styles.buttonText} >Submit</Text>
        </TouchableOpacity>
 
        </View>
@@ -298,8 +304,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
+  },
+  contents: {
+    paddingHorizontal: 30,
   },
   input: {
     backgroundColor: "transparent",
@@ -308,4 +316,34 @@ const styles = StyleSheet.create({
     color: '#000000',
     fontSize: 16,
   },
+  buttonLink: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    marginBottom: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: '#00cdbe',
+    borderWidth: 1
+  },
+  link: {
+    color: "#000",
+    fontSize: 16,
+  },
+  button: {
+    backgroundColor: "#00cdbe",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    fontSize: 13,
+    color: "#fff",
+  },
+  starContainer: {
+    paddingVertical: 20,
+    marginBottom: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
 });
