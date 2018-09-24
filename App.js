@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Image,Text, TouchableOpacity,TextInput,View,ActivityIndicator } from 'react-native';
+import { StyleSheet, Image,Text, TouchableOpacity,TextInput,View, ActivityIndicator, ScrollView } from 'react-native';
 import Canvas, {Image as CanvasImage} from 'react-native-canvas';
 import Moment from 'moment';
 import { Rating } from 'react-native-elements';
@@ -227,73 +227,76 @@ export default class App extends React.Component {
 
         <Canvas ref={this.handleCanvas}/>
        :
-       <View style={styles.contents}>
-       <TextInput
-       placeholder={"Food Name"}
-       value={this.state.foodName}
-        style={styles.input}
-       onChangeText={(text) =>this.setState({foodName:text})}
-       underlineColorAndroid="#000000"
-       />
-       <TextInput
-       placeholder={"Resturant Address"}
-       value={this.state.resturantAddress}
-       style={styles.input}
-       onChangeText={(text) =>this.setState({resturantAddress:text})}
-       underlineColorAndroid="#000000"
-       />
-       <TextInput
-       placeholder={"User Review"}
-       value={this.state.userReview}
-       style={styles.input}
-       onChangeText={(text) =>this.setState({userReview:text})}
-       underlineColorAndroid="#000000"
-       />
-       <Rating
-       type="star"
-       ratingCount={5}
-       fractions={0}
-       startingValue={0}
-       imageSize={30}
-       ratingTextColor="#00cdbe"
-       ratingBackgroundColor="#00cdbe"
-       onFinishRating={this.ratingCompleted}
-       showRating
-       style={styles.starContainer}
-       />
-       <TouchableOpacity
-        onPress={()=>{
-         this._pickImage()
-         this.setState({imageSelect:1})
-       }}
-       style={styles.buttonLink}>
-         {
-           this.state.bgImageSrc!=""?
-           <Text> Image Uploaded </Text>
-           :
-           <Text style={styles.link}>Meal Image</Text>
-         }
-       </TouchableOpacity>
+       <ScrollView style={styles.scrollableSection}>
+        <View style={styles.contents}>
+          <TextInput
+          placeholder={"Food Name"}
+          value={this.state.foodName}
+            style={styles.input}
+          onChangeText={(text) =>this.setState({foodName:text})}
+          underlineColorAndroid="#000000"
+          />
+          <TextInput
+          placeholder={"Resturant Address"}
+          value={this.state.resturantAddress}
+          style={styles.input}
+          onChangeText={(text) =>this.setState({resturantAddress:text})}
+          underlineColorAndroid="#000000"
+          />
+          <TextInput
+          placeholder={"User Review"}
+          value={this.state.userReview}
+          style={styles.input}
+          onChangeText={(text) =>this.setState({userReview:text})}
+          underlineColorAndroid="#000000"
+          />
+          <Rating
+          type="star"
+          ratingCount={5}
+          fractions={0}
+          startingValue={0}
+          imageSize={30}
+          ratingTextColor="#00cdbe"
+          ratingBackgroundColor="#00cdbe"
+          onFinishRating={this.ratingCompleted}
+          showRating
+          style={styles.starContainer}
+          />
+          <TouchableOpacity
+            onPress={()=>{
+            this._pickImage()
+            this.setState({imageSelect:1})
+          }}
+          style={styles.buttonLink}>
+            {
+              this.state.bgImageSrc!=""?
+              <Text> Image Uploaded </Text>
+              :
+              <Text style={styles.link}>Meal Image</Text>
+            }
+          </TouchableOpacity>
 
-       <TouchableOpacity onPress={()=>{
-         this._pickImage()
-         this.setState({imageSelect:2})
-       }}
-       style={styles.buttonLink}>
-           {
-             this.state.profileImage!=""?
-             <Text> Image Uploaded </Text>
-             :
-           <Text style={styles.link}>Profile Image</Text>
-           }
-       </TouchableOpacity>
+          <TouchableOpacity onPress={()=>{
+            this._pickImage()
+            this.setState({imageSelect:2})
+          }}
+          style={styles.buttonLink}>
+              {
+                this.state.profileImage!=""?
+                <Text> Image Uploaded </Text>
+                :
+              <Text style={styles.link}>Profile Image</Text>
+              }
+          </TouchableOpacity>
 
 
-       <TouchableOpacity onPress={()=>this.setState({showImage:true})} style={styles.button}>
-           <Text style={styles.buttonText} >Submit</Text>
-       </TouchableOpacity>
+          <TouchableOpacity onPress={()=>this.setState({showImage:true})} style={styles.button}>
+              <Text style={styles.buttonText} >Submit</Text>
+          </TouchableOpacity>
 
-       </View>
+          </View>
+        </ScrollView>
+
       }
       </View>
     )
@@ -306,7 +309,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     justifyContent: 'center',
   },
+  scrollableSection: {
+    flex: 1,
+    height: "100%",
+  },
   contents: {
+    paddingVertical: 50,
     paddingHorizontal: 30,
   },
   input: {
