@@ -22,8 +22,8 @@ export default class App extends React.Component {
     showImage:false,
     avatar: null,
     fileName:'',
-    bgImageSrc : "",
-    profileImage : "",
+    bgImageSrc : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-XVlVmRd4QrtD2DMzeDBVpkR-QSev-6Cm_FMivWKmFBosnByK",
+    profileImage : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-XVlVmRd4QrtD2DMzeDBVpkR-QSev-6Cm_FMivWKmFBosnByK",
     imageSelect : 0,
 
   }
@@ -114,7 +114,6 @@ export default class App extends React.Component {
   }
 
   handleCanvas = async (canvas) => {
-    this.setState({loading:false})
     const foodName = this.state.foodName;
     const resturantAddress = this.state.resturantAddress;
     const userReview = this.state.userReview;
@@ -218,6 +217,20 @@ export default class App extends React.Component {
     ctx.fillStyle = options.fill;
     ctx.fillText(options.text, options.x, options.y);
   }
+  renderMealImage(){
+    return(
+      <View style={styles.imageBlock}>
+				<Image source={{uri: this.state.bgImageSrc }} resizeMode="cover" style={styles.bannerImage} />
+			</View>
+    )
+  }
+  renderProfileImage(){
+     return (
+       <View style={styles.imageBlock}>
+ 				<Image source={{uri: this.state.profileImage }} resizeMode="cover" style={styles.bannerImage} />
+ 			</View>
+     )
+  }
 
   render() {
     return (
@@ -262,32 +275,60 @@ export default class App extends React.Component {
           showRating
           style={styles.starContainer}
           />
-          <TouchableOpacity
-            onPress={()=>{
-            this._pickImage()
-            this.setState({imageSelect:1})
-          }}
-          style={styles.buttonLink}>
+          <View style={styles.imageUploadArea}>
+						<View style={styles.bannerPlaceholder}>
+							<Image
+								style={styles.placeholderImage}
+								resizeMode="cover"
+								/>
+						</View>
+						<TouchableOpacity onPress={()=>{
+              this._pickImage()
+              this.setState({imageSelect:1})
+            }}
+            style={this.state.bgImageSrc!="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-XVlVmRd4QrtD2DMzeDBVpkR-QSev-6Cm_FMivWKmFBosnByK"?null:styles.buttonBannerUpload}>
             {
-              this.state.bgImageSrc!=""?
-              <Text> Image Uploaded </Text>
+              this.state.bgImageSrc!="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-XVlVmRd4QrtD2DMzeDBVpkR-QSev-6Cm_FMivWKmFBosnByK"?
+              null
               :
               <Text style={styles.link}>Meal Image</Text>
             }
-          </TouchableOpacity>
+						</TouchableOpacity>
 
-          <TouchableOpacity onPress={()=>{
-            this._pickImage()
-            this.setState({imageSelect:2})
-          }}
-          style={styles.buttonLink}>
-              {
-                this.state.profileImage!=""?
-                <Text> Image Uploaded </Text>
-                :
+						<View style={styles.bannerImageContainer}>
+							<ScrollView horizontal={true} style={styles.bannerImageScroller}>
+                  {this.renderMealImage()}
+							</ScrollView>
+						</View>
+
+					</View>
+          <View style={styles.imageUploadArea}>
+						<View style={styles.bannerPlaceholder}>
+							<Image
+								style={styles.placeholderImage}
+								resizeMode="cover"
+								/>
+						</View>
+						<TouchableOpacity onPress={()=>{
+              this._pickImage()
+              this.setState({imageSelect:2})
+            }}
+            style={this.state.profileImage!="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-XVlVmRd4QrtD2DMzeDBVpkR-QSev-6Cm_FMivWKmFBosnByK"?null:styles.buttonBannerUpload}>
+            {
+              this.state.profileImage!="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-XVlVmRd4QrtD2DMzeDBVpkR-QSev-6Cm_FMivWKmFBosnByK"?
+              null
+              :
               <Text style={styles.link}>Profile Image</Text>
-              }
-          </TouchableOpacity>
+            }
+						</TouchableOpacity>
+
+						<View style={styles.bannerImageContainer}>
+							<ScrollView horizontal={true} style={styles.bannerImageScroller}>
+                  {this.renderProfileImage()}
+							</ScrollView>
+						</View>
+
+					</View>
 
 
           <TouchableOpacity onPress={()=>this.setState({showImage:true})} style={styles.button}>
@@ -353,5 +394,67 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     justifyContent: 'center',
     alignItems: 'center',
-  }
+  },
+  imageUploadArea: {
+		height: 200,
+		marginBottom: 15,
+		justifyContent: "center",
+		alignItems: "center",
+		borderTopWidth: 1,
+		borderTopColor: "rgba(0,0,0,0.05)",
+		borderLeftWidth: 2,
+		borderLeftColor: "rgba(0,0,0,0.05)",
+		borderRightWidth: 2,
+		borderRightColor: "rgba(0,0,0,0.05)",
+		borderBottomWidth: 4,
+		borderBottomColor: "rgba(0,0,0,0.08)",
+		backgroundColor: "#ffffff",
+		position: "relative",
+	},
+	bannerPlaceholder: {
+		flex: 1,
+		alignItems: "center",
+		justifyContent: "center",
+		zIndex: 1,
+		position: "absolute",
+		left: 0,
+		top: 0,
+		right: 0,
+		bottom: 0,
+	},
+	placeholderImage: {
+		flex: 1,
+	},
+	buttonBannerUpload: {
+		paddingVertical: 15,
+		paddingHorizontal: 30,
+		backgroundColor: 'transparent',
+		position: "relative",
+		zIndex: 3,
+		borderWidth: 2,
+		borderColor: '#fc5b1f',
+	},
+	buttonBannerUploadText: {
+		color: '#fc5b1f',
+		fontWeight: '500',
+	},
+	bannerImageContainer: {
+		flex: 1,
+		zIndex: 2,
+		position: "absolute",
+		left: 0,
+		top: 0,
+		right: 0,
+		bottom: 0,
+	},
+	bannerImageScroller: {
+		flex: 1,
+	},
+	imageBlock: {
+		flex: 1,
+	},
+	bannerImage: {
+		width: 320,
+		height: 200,
+	},
 });
