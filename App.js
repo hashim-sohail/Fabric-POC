@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Image,Text, TouchableOpacity,TextInput,View, ActivityIndicator, ScrollView } from 'react-native';
+import { StyleSheet, Image,Text, Dimensions,TouchableOpacity,TextInput,View, ActivityIndicator, ScrollView } from 'react-native';
 import Canvas, {Image as CanvasImage} from 'react-native-canvas';
 import Moment from 'moment';
 import { Rating } from 'react-native-elements';
@@ -34,16 +34,27 @@ export default class App extends React.Component {
     // this.onReset = this.onReset.bind(this);
 
   }
+  calculateAspectRatioFit(srcWidth, srcHeight, maxWidth, maxHeight) {
+
+        var ratio = [maxWidth / srcWidth, maxHeight / srcHeight ];
+        ratio = maxWidth < maxHeight ? ratio[0] : ratio[1]
+        var width = srcWidth*ratio;
+        var height = srcHeight*ratio;
+        console.log(width + "  " + height);
+        return { width:width, height:height };
+  }
   addBackgroundImage = function(url, canvas) {
     return this.loadImage({
       src: url, x: 0, y: 0,
       width: 300, height: 300,
-      canvas: canvas
+      canvas: canvas,
+      squareImage: true
     });
+
   }
 
   addOpaqueBg = (x, y, width, height, ctx) => {
-    ctx.globalAlpha = 0.1;
+    ctx.globalAlpha = 0.2;
     ctx.fillStyle = 'black';
     ctx.fillRect(x, y, width, height);
     ctx.globalAlpha = 1;
@@ -147,8 +158,9 @@ export default class App extends React.Component {
     window.devicePixelRatio = 1;
     const scaleX = 1.2;
     const scaleY = 1.2;
-    canvas.width = 300 * scaleX;
-    canvas.height = 300 * scaleY;
+
+    canvas.width =  300 * scaleX;
+    canvas.height =  300 * scaleY;
     const ctx = canvas.getContext('2d');
     ctx.scale(scaleX, scaleY);
     console.log(window.devicePixelRatio, ctx.height);
@@ -157,7 +169,7 @@ export default class App extends React.Component {
     this.addOpaqueBg(0, 0, 300, 40, ctx);
 
     this.addText(ctx, {
-      font: 'bold 17px Roboto',
+      font: 'bold 15px Roboto',
       fill: 'white',
       text: foodName,
       x: 15, y: 22,
@@ -182,7 +194,8 @@ export default class App extends React.Component {
     imageLoadingPromises.push(this.loadImage({
       src: profileImage, x: 10, y: 230,
       width: 25, height: 25,
-      canvas: canvas
+      canvas: canvas ,
+      squareImage :true
     }));
 
     this.addReviews(userReview, ctx);
@@ -219,12 +232,28 @@ export default class App extends React.Component {
       image.src = options.src;
       image.addEventListener('load', () => {
         image.crossOrigin = 'anonymous';
-        ctx.drawImage(image, options.x, options.y, options.width, options.height);
+        options.squareImage && this.getSquareDimensions(image, options);
+        options.squareImage && ctx.drawImage(image, options.sx, options.sy, options.swidth, options.sheight, options.x, options.y, options.width, options.height);
+        !options.squareImage && ctx.drawImage(image, options.x, options.y, options.width, options.height);
         resolve();
       });
     });
   }
 
+  getSquareDimensions = function(image, options) {
+    options.swidth = image.width;
+    options.sheight = image.width;
+    let diff = (image.width - image.height) / 2;
+    diff = diff < 0 ? diff * -1 : diff;
+    options.sx = 0;
+    options.sy = diff;
+    if (image.width > image.height) {
+      options.swidth = image.height;
+      options.sheight = image.height;
+      options.sy = 0;
+      options.sx = diff;
+    }
+ }
   addText = function(ctx, options) {
     ctx.font = options.font;
     ctx.fillStyle = options.fill;
