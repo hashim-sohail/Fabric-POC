@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Image,Text, Dimensions,TouchableOpacity,TextInput,View, ActivityIndicator, ScrollView } from 'react-native';
 import Canvas, {Image as CanvasImage} from 'react-native-canvas';
+import RNFetchBlob from 'react-native-fetch-blob'
 import Moment from 'moment';
 import { Rating } from 'react-native-elements';
 import ImagePicker from 'react-native-image-picker'
@@ -12,6 +13,8 @@ const options = {
   },
 }
 var spacesBetweenLines = 10;
+var screenWidth = Dimensions.get('window').width
+var screenHeight = Dimensions.get('window').height
 export default class App extends React.Component {
 
   state =  {
@@ -33,7 +36,6 @@ export default class App extends React.Component {
     this.ratingCompleted = this.ratingCompleted.bind(this);
     this._pickImage = this._pickImage.bind(this);
     // this.onReset = this.onReset.bind(this);
-
   }
 
   addBackgroundImage = function(url, canvas) {
@@ -45,6 +47,7 @@ export default class App extends React.Component {
     });
 
   }
+
 
   addOpaqueBg = (x, y, width, height, ctx) => {
     // ctx.globalAlpha = 0.2;
@@ -155,9 +158,9 @@ export default class App extends React.Component {
         userReview = userReview.substring(i);
     }
     this.state.txtArray.push(userReview);
-    // alert(this.state.txtArray.length)
     return this.state.txtArray;
   }
+
   handleCanvas = async (canvas) => {
     const foodName = this.state.foodName;
     const resturantAddress = this.state.resturantAddress;
@@ -173,6 +176,7 @@ export default class App extends React.Component {
     const givenRatings = this.state.givenRatings;
     const bgImageSrc = this.state.bgImageSrc;
     const topTransparency = this.getTopTransparency();
+    const bottomTranparency = this.getBottomTranparency();
     let imageLoadingPromises = [];
 
     /**
@@ -189,12 +193,25 @@ export default class App extends React.Component {
     ctx.scale(scaleX, scaleY);
     console.log(window.devicePixelRatio, ctx.height);
     await this.addBackgroundImage(bgImageSrc, canvas);
-
-    imageLoadingPromises.push(this.loadImage({
+    await this.loadImage({
       src: topTransparency, x: 0, y: 0,
       width: 300, height: 50,
       canvas: canvas
-    }));
+    });
+    await this.loadImage({
+      src: profileImage, x: 10, y: 230-anchorLength,
+      width: 30, height: 30,
+      canvas: canvas ,
+      squareImage :true,
+      clip: true,
+      anchorLength: anchorLength
+    });
+    await this.loadImage({
+      src: bottomTranparency, x: 0, y:215-anchorLength ,
+      width: 300, height: 85+anchorLength,
+      canvas: canvas
+    });
+
     this.addText(ctx, {
       font: 'bold 15px Roboto',
       fill: 'white',
@@ -210,11 +227,7 @@ export default class App extends React.Component {
     });
 
     // this.addOpaqueBg(0,215-anchorLength  ,300 ,85+anchorLength , ctx);
-    imageLoadingPromises.push(this.loadImage({
-      src: topTransparency, x: 0, y:215-anchorLength ,
-      width: 300, height: 85+anchorLength,
-      canvas: canvas
-    }));
+
 
     imageLoadingPromises = this.addRatings(anchorLength,givenRatings, yellowStar, grayStar, canvas).concat(imageLoadingPromises)
 
@@ -242,18 +255,25 @@ export default class App extends React.Component {
       canvas: canvas
     }));
 
-    imageLoadingPromises.push(this.loadImage({
-      src: profileImage, x: 10, y: 230-anchorLength,
-      width: 30, height: 30,
-      canvas: canvas ,
-      squareImage :true,
-      clip: true,
-      anchorLength: anchorLength
-    }));
+
 
 
     await Promise.all(imageLoadingPromises);
-    const base64Image = await canvas.toDataURL();
+    await canvas.toDataURL('image/jpeg', 1.0)
+        .then((data) => {
+            data = data.substring(1);
+            data = data.slice(0, -1);
+
+            if (data.indexOf('data:image/jpeg;base64,') > -1) {
+                // Removing "data:image/jpeg;base64," for saving into file as base64 data
+                data = data.substring(23);
+          }
+
+        RNFetchBlob.fs.writeFile("/storage/emulated/0/Download/canvas"+new Date()+".png", data, 'base64')
+            .then((data) => {
+                alert("saved")
+        })
+    })
     // console.log(base64Image);
     // this.profilePlaceholder(25, 245, 15, ctx);
   }
@@ -271,35 +291,31 @@ export default class App extends React.Component {
       const image = new CanvasImage(options.canvas);
       image.crossOrigin = "Anonymous";
       image.src = options.src;
+      image.addEventListener('load', () => {
+        image.crossOrigin = 'anonymous';
+        options.squareImage && this.getSquareDimensions(image, options);
 
-
-      if ( options.clip ) {
-        image.addEventListener('load', () => {
-          image.crossOrigin = 'anonymous';
-          options.squareImage && this.getSquareDimensions(image, options);
-          options.squareImage && ctx.drawImage(image, options.sx, options.sy, options.swidth, options.sheight, options.x, options.y, options.width, options.height);
-          !options.squareImage && ctx.drawImage(image, options.x, options.y, options.width, options.height);
-          resolve();
-        });
-
-        setTimeout(() => {
+        if (options.clip) {
+          ctx.save()
           ctx.beginPath();
-          this.profilePlaceholder(25, 245-options.anchorLength, 15, ctx);
+          ctx.lineWidth = 1;
+          ctx.strokeStyle = "#00CDBE";
+          ctx.stroke();
+          ctx.arc(25, 245-options.anchorLength, 15,0,2*Math.PI);
           ctx.closePath();
-          ctx.restore();
-        }, 1000);
-      }
-      else {
-        image.addEventListener('load', () => {
-          image.crossOrigin = 'anonymous';
-          options.squareImage && this.getSquareDimensions(image, options);
-          options.squareImage && ctx.drawImage(image, options.sx, options.sy, options.swidth, options.sheight, options.x, options.y, options.width, options.height);
-          !options.squareImage && ctx.drawImage(image, options.x, options.y, options.width, options.height);
-          resolve();
-        });
-
-      }
-
+          ctx.clip();
+        }
+        options.squareImage && ctx.drawImage(image, options.sx, options.sy, options.swidth, options.sheight, options.x, options.y, options.width, options.height);
+        !options.squareImage && ctx.drawImage(image, options.x, options.y, options.width, options.height);
+        ctx.restore();
+        if (options.clip) {
+          ctx.lineWidth = 1;
+          ctx.strokeStyle = "#00CDBE";
+          ctx.stroke();
+          ctx.arc(25, 245-options.anchorLength, 15,0,2*Math.PI);
+        }
+        resolve();
+      });
     });
   }
 
