@@ -65,17 +65,6 @@ export default class App extends React.Component {
     // ctx.globalAlpha = 0.2;
     ctx.fillStyle = 'rgba(0,0,0,0.2)';
     ctx.fillRect(x, y, width, height);
-    // return this.loadImage({
-    //   src: topTransparency, x: 238, y: 285,
-    //   width: 10, height: 10,
-    //   canvas: canvas
-    // });
-    // var gradient = ctx.createLinearGradient(0,0,0,250);
-    //   gradient.addColorStop(0, "rgba(0,0,0,.5)");
-    //   gradient.addColorStop(1, "rgba(0,0,0,0)");
-    // ctx.fillStyle = gradient;
-
-    // ctx.globalAlpha = 1;
   }
 
   addRatings = (anchorLength,givenRatings, yellowStar, grayStar, canvas) => {
@@ -106,6 +95,7 @@ export default class App extends React.Component {
       });
     }
   }
+
 
   profilePlaceholder = (x, y, r, ctx) => {
     // ctx.beginPath();
@@ -273,7 +263,9 @@ export default class App extends React.Component {
     // this.addOpaqueBg(0,215-anchorLength  ,300 ,85+anchorLength , ctx);
 
 
+
     imageLoadingPromises = this.addRatings(anchorLength,givenRatings, yellowStar, grayStar, canvas).concat(imageLoadingPromises)
+ 
 
     this.addText(ctx, {
       font: '10px Roboto',
