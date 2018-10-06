@@ -5,8 +5,20 @@ import RNFetchBlob from 'react-native-fetch-blob'
 import Moment from 'moment';
 import { Rating } from 'react-native-elements';
 import ImagePicker from 'react-native-image-picker'
+import ImageResizer from 'react-native-image-resizer';
+
 const options = {
   title: 'Select image of your avatar',
+  cameraType: 'back',
+  mediaType: 'photo',
+  maxWidth: 1000,
+  maxHeight: 1000,
+  aspectX: 2,
+  aspectY: 1,
+  quality: 1,
+  angle: 0,
+  allowsEditing: false,
+  noData: false,
   storageOptions: {
     skipBackup: true,
     path: 'images',
@@ -121,28 +133,56 @@ export default class App extends React.Component {
 
   _pickImage = async () => {
     ImagePicker.showImagePicker(options, response => {
+      console.log(response)
       if (!response.didCancel && !response.error) {
         const source = { uri: response.uri }
+        Image.getSize(response.uri, (width, height) => {
+          if (width > height){
+            var savedThis = this;
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", response.uri , true);
+            xhr.responseType = "blob";
+            xhr.onload = function (e) {
 
-        var savedThis = this;
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", response.uri , true);
-        xhr.responseType = "blob";
-        xhr.onload = function (e) {
+              var reader = new FileReader();
+              reader.onload = function(event) {
+              var res = event.target.result;
+              if(savedThis.state.imageSelect==1){
+                savedThis.setState({bgImageSrc:res})
+              }else if(savedThis.state.imageSelect==2){
+                savedThis.setState({profileImage:res})
+              }
+            }
+            var file = this.response;
+            reader.readAsDataURL(file)
+            };
+            xhr.send();
+          }else if(width < height){
+            ImageResizer.createResizedImage(response.uri, height, width, 'JPEG', 100, 0).then((response) => {
+              var savedThis = this;
+              var xhr = new XMLHttpRequest();
+              xhr.open("GET", response.uri , true);
+              xhr.responseType = "blob";
+              xhr.onload = function (e) {
 
-          var reader = new FileReader();
-          reader.onload = function(event) {
-          var res = event.target.result;
-          if(savedThis.state.imageSelect==1){
-            savedThis.setState({bgImageSrc:res})
-          }else if(savedThis.state.imageSelect==2){
-            savedThis.setState({profileImage:res})
+                var reader = new FileReader();
+                reader.onload = function(event) {
+                var res = event.target.result;
+                if(savedThis.state.imageSelect==1){
+                  savedThis.setState({bgImageSrc:res})
+                }else if(savedThis.state.imageSelect==2){
+                  savedThis.setState({profileImage:res})
+                }
+              }
+              var file = this.response;
+              reader.readAsDataURL(file)
+              };
+              xhr.send()
+            }).catch((err) => {
+
+            });
           }
-        }
-        var file = this.response;
-        reader.readAsDataURL(file)
-        };
-        xhr.send()
+        });
       }else{
         console.log(response.error);
       }
@@ -197,7 +237,13 @@ export default class App extends React.Component {
 
     await this.loadImage({
       src: topTransparency, x: 0, y: 0,
-      width: 300, height: 50,
+      width: 300, height: 100,
+      canvas: canvas
+    });
+
+    await this.loadImage({
+      src: bottomTranparency, x: 0, y:215-((anchorLength+50)+(anchorLength*(anchorLength/2))),
+      width: 300, height: 85+((anchorLength+50)+(anchorLength*(anchorLength/2))),
       canvas: canvas
     });
 
@@ -208,12 +254,6 @@ export default class App extends React.Component {
       squareImage :true,
       clip: true,
       anchorLength: anchorLength
-    });
-
-    await this.loadImage({
-      src: bottomTranparency, x: 0, y:215-anchorLength ,
-      width: 300, height: 85+anchorLength,
-      canvas: canvas
     });
 
     this.addText(ctx, {
@@ -249,7 +289,7 @@ export default class App extends React.Component {
       width: 65, height: 15,
       canvas: canvas
     });
-    
+
     await Promise.all(imageLoadingPromises);
 
     /*  For saving Image To local phone directory */
