@@ -123,8 +123,8 @@ export default class App extends React.Component {
 
   _pickImage = async () => {
     ImagePicker.showImagePicker(options, response => {
-      console.log(response)
       if (!response.didCancel && !response.error) {
+        console.log(response.originalRotation)
         const source = { uri: response.uri }
         Image.getSize(response.uri, (width, height) => {
           if (width > height){
@@ -189,6 +189,7 @@ export default class App extends React.Component {
         userReview = userReview.substring(i);
     }
     this.state.txtArray.push(userReview);
+    console.log(this.state.txtArray)
     return this.state.txtArray;
   }
 
@@ -232,8 +233,8 @@ export default class App extends React.Component {
     });
 
     await this.loadImage({
-      src: bottomTranparency, x: 0, y:215-((anchorLength+50)+(anchorLength*(anchorLength/2))),
-      width: 300, height: 85+((anchorLength+50)+(anchorLength*(anchorLength/2))),
+      src: bottomTranparency, x: 0, y:215-(anchorLength+90),
+      width: 300, height: 85+(anchorLength+90),
       canvas: canvas
     });
 
@@ -265,7 +266,7 @@ export default class App extends React.Component {
 
 
     imageLoadingPromises = this.addRatings(anchorLength,givenRatings, yellowStar, grayStar, canvas).concat(imageLoadingPromises)
- 
+
 
     this.addText(ctx, {
       font: '10px Roboto',
