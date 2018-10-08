@@ -55,6 +55,7 @@
 		9A9178057AC34E3A903952B7 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9F30476D10D4466FAF46A1BD /* SimpleLineIcons.ttf */; };
 		0FFABF3466524FF5B13D82BC /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 209AB65A8B69479AAEB4AF09 /* Zocial.ttf */; };
 		C91717F85D4F44EF8A675FB3 /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C7624F7B9924EB984E5E8DB /* libRNFS.a */; };
+		8042FDFE42CE4CC6AB3E7A61 /* libRCTImageResizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5725335149744CBDA3AB32ED /* libRCTImageResizer.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -382,6 +383,8 @@
 		209AB65A8B69479AAEB4AF09 /* Zocial.ttf */ = {isa = PBXFileReference; name = "Zocial.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		8D9A8FCC88014AB9AE6374E6 /* RNFS.xcodeproj */ = {isa = PBXFileReference; name = "RNFS.xcodeproj"; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		5C7624F7B9924EB984E5E8DB /* libRNFS.a */ = {isa = PBXFileReference; name = "libRNFS.a"; path = "libRNFS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		05FF61F23F8F48E3A8B0736E /* RCTImageResizer.xcodeproj */ = {isa = PBXFileReference; name = "RCTImageResizer.xcodeproj"; path = "../node_modules/react-native-image-resizer/ios/RCTImageResizer.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		5725335149744CBDA3AB32ED /* libRCTImageResizer.a */ = {isa = PBXFileReference; name = "libRCTImageResizer.a"; path = "libRCTImageResizer.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -413,6 +416,7 @@
 				BA68E6C14B7B4E4B8967A778 /* libRNFetchBlob.a in Frameworks */,
 				8DAA769CAC5E4AA0BA70B63F /* libRNVectorIcons.a in Frameworks */,
 				C91717F85D4F44EF8A675FB3 /* libRNFS.a in Frameworks */,
+				8042FDFE42CE4CC6AB3E7A61 /* libRCTImageResizer.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -603,6 +607,7 @@
 				BE2528A504C149708A482863 /* RNFetchBlob.xcodeproj */,
 				1D070A35864D477E8E5A43F1 /* RNVectorIcons.xcodeproj */,
 				8D9A8FCC88014AB9AE6374E6 /* RNFS.xcodeproj */,
+				05FF61F23F8F48E3A8B0736E /* RCTImageResizer.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1271,6 +1276,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1278,6 +1284,7 @@
 					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 				);
 			};
 			name = Debug;
@@ -1303,6 +1310,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1310,6 +1318,7 @@
 					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 				);
 			};
 			name = Release;
@@ -1336,6 +1345,7 @@
 					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 				);
 			};
 			name = Debug;
@@ -1361,6 +1371,7 @@
 					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 				);
 			};
 			name = Release;
@@ -1394,6 +1405,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1401,6 +1413,7 @@
 					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 				);
 			};
 			name = Debug;
@@ -1434,6 +1447,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1441,6 +1455,7 @@
 					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 				);
 			};
 			name = Release;
@@ -1473,6 +1488,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1480,6 +1496,7 @@
 					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 				);
 			};
 			name = Debug;
@@ -1512,6 +1529,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1519,6 +1537,7 @@
 					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 				);
 			};
 			name = Release;
